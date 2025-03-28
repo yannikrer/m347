@@ -1,0 +1,39 @@
+#cloud-config
+# source: https://gist.github.com/syntaqx/9dd3ff11fb3d48b032c84f3e31af9163
+users:
+  - name: ubuntu
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
+    home: /home/ubuntu
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCUBo+qnNu5xxM9vfz4C04M36FHxHNrEMdm5TkFj1/SfVtqunlUOeMpu7nFCZZKnX8HYwf/MkjcBiTYAgncxku8grwl6XuW/pcvmb6/ghSIaw4xtRRSzit7omqJ5d8kXB3+Nd1aaMHsjfly4nkaqswhySVXQqr8Hw6DbWVw8jLLVKEE+5NZHY33hJkhJwK4blCllsGpmQaKi1qxjsN0hZOWNK01iJAydwD8t2xJ0NOYbq8Qas5IyPnRN7SPxvEhIP6WLQ6Ym6Dmf8FwNW1cHLTKabgjzt5f/HKUkKS89dPd3fn4nnFli1BOMECGUIvVlOw2pQNri7+04OOfn2FGlqr5 teacher
+      - ssh-rsa MIIEowIBAAKCAQEApFdUZhRPz8rfikbbY3OYkHsoLQJPbLpKvMCGC/BxnD6DCREzb5oRJVgELkCid82fJJy/vOIXlmXKJnTqcxzwn/q56fqjEnOH1vJKiTFm2tnIGcSYlTz+ckJOQbIF0wGpmlXO3xQvf3qXMSGjckyN3ZRmJHwmy7JSkfF2ZtNLP0k86fHi1/xNGqQ37mv7mxrcBGP4MiNvOg5RjlUwwTrF25Kp56VzDQGTo+9EGWB14E/fO+D5BgrE5rBuJUtlmRGNRe+MetMMAFfEgJaInelKGjnFjHDOXRO3NB22z836Aoo/7RhJZN60xDahNlSHsppCNTgfNKMYZ6TAoVKYzvwwmQIDAQABAoIBAARIcl6msN3Nf73u0tDotlUtoIJryP4gbMo2ikfNYGieCHQ4CosiDMhYXuOFs7ZDmZ4up6CYk9zLklUmPuX5HxxMQIQkkBNvB19GuUKSEwgpHNnvEbrx9/+qUrfLl/ND29O14MpXkFVWMJKLOeNEs33O3EqfIbO1VgmPrXJIl3FywH4I/FihHboSF3eUBEVvq32+D6N667Q+wVXo6GcpXAZ5uhNbsg1GaBm6KMX+xyPCI/vxR43SmBL9A+vgSou20W/U0rjqcpkljrI0i6XwXHDk2x8cv7m3LK9iEHFU3v8EMqdynWAhmJ2jGtDda9keMW/RNZcJxUUNUa6PmAmNbAECgYEA0Z6TgtW3utSbce8tcTlVoFO6qGy+CYK9s0gi/aOwb4D7aEhuysJOj5djXgW9jIVSC55gaj9w72u/45rqFPkJmlhN34EPhCV5AFBRgYm36lRp5IMI/KAVlCK2vPhbgch7DApmr+dYQb8QpTUU9Ty7ASQQxC3TKsW4ectA6mGopLkCgYEAyLQQrbS1h5qYbjcT/xKkHrNtJsWcrS9zwPKGYxFJHDlanvx5l/V/P/trv677eNzl4kqT0XVXmeOxwPbdDhOJRncvYcYHWcB3q6SxQ9vV43tGlYAh2SmsPane6Iu1kWyKdLAklhTC49jTLl69XeusgrbTz0x0J10wNqq2KcI9uuECgYEA0E05nskL08/UTIr16E6mRTUPBrFQwxi1tAOaKdxQxu0wZ3ebCUe/U7eHmfYwXwRY/Iy8mLhEXNcBD4dw17iGD2dyswiIR7QJIwOtiwE0ztplhBumgYv/BX7dgrl2DWkQxW1Mj75gGK1qOBGgqvZXipGxS5GSBy4F3Jna/05ejJkCgYBENn7cquhvmClqfCm9rZY+IPleDhe7/L64uzTVgtB4WT3lfyXMcdG36zmpwk0RvPIcwQAQVnNZiDunu79Rw24KlwNxlZ518KY7nhPpXlQJpqJMuWnHpxQ1OQDbxHAHZv5/vkYRBClgyxarUePGggz1uDGw6OkpX9C9I7QZ6TyVwQKBgHNt/V0sODDOsKKawvqgzDBrtWmR2ZwqGzzXv37FYL/5fxNkl2UFXI9wlCSViMTGlgBxMa7eGq7r7gIOzOxgI+0zRXY83Eg92nEr78WgEQVGaOyCK2N+E92CU3dYPVjumzBT3Nz5a3D+3JRLHe27P+a98X/zv3Zml4pdq6kQ85CO 
+ssh_pwauth: false
+disable_root: false
+package_update: true
+package_upgrade: true
+groups:
+  - docker
+system_info:
+  default_user:
+    groups: [docker]
+packages:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg
+  - lsb-release
+  - unattended-upgrades
+final_message: "The system is finally up, after $UPTIME seconds"
+write_files: # Erweitern Sie diesen Teil
+runcmd:
+  - mkdir -p /etc/apt/keyrings
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+  - echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+  - apt-get update
+  - apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+  - systemctl enable docker
+  - systemctl start docker
+  # Erwetiern Sie hier die Befehle!
+
